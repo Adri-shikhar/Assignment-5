@@ -1,6 +1,12 @@
 const filterAllBtn = document.getElementById('btnAll');
 const filterOpenBtn = document.getElementById('btnOpen');
 const filterClosedBtn = document.getElementById('btnClosed');
+
+// Global variables to store counts
+let totalIssuesCount = 0;
+let openIssuesCount = 0;
+let closedIssuesCount = 0;
+
 //Fetch the Api data
 fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
     .then(response => response.json())
@@ -10,8 +16,13 @@ fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
 fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
     .then(response => response.json())
     .then(data => {
+        // Calculate counts
+        totalIssuesCount = data.data.length;
+        openIssuesCount = data.data.filter(issue => issue.status === 'open').length;
+        closedIssuesCount = data.data.filter(issue => issue.status === 'closed').length;
+        
         // Update all issues count
-        document.getElementById('allIssueCount').textContent = `${data.data.length} Issues`;
+        document.getElementById('allIssueCount').textContent = `${totalIssuesCount} Issues`;
        
         const issuesList = document.getElementById('issuesList');
         data.data.forEach(issue => {
@@ -125,7 +136,6 @@ fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
     .then(response => response.json())
     .then(data => {
         const openCount = data.data.filter(issue => issue.status === 'open').length;
-        console.log('Open issues count:', openCount);
         
         // Update open issues count
         document.getElementById('openIssueCount').textContent = `${openCount} Issues`;
@@ -234,6 +244,9 @@ fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
             }
         });
     })
+
+
+    
    
 
 
