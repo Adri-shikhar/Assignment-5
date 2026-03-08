@@ -20,16 +20,89 @@ const loaddetails = (id) => {
             // Set title
             document.getElementById('modalTitle').textContent = issue.title;
             
+            // Set status
+            const statusElement = document.getElementById('modalStatus');
+            if (issue.status === 'open') {
+                statusElement.textContent = 'Opened';
+                statusElement.className = 'px-3 py-1 text-xs font-semibold text-green-700 bg-green-100 rounded-full';
+            } else {
+                statusElement.textContent = 'Closed';
+                statusElement.className = 'px-3 py-1 text-xs font-semibold text-purple-700 bg-purple-100 rounded-full';
+            }
+            
+            // Set author and date
+            document.getElementById('modalAuthor').textContent = issue.author || 'Unknown';
+            const date = new Date(issue.createdAt).toLocaleDateString('en-GB');
+            document.getElementById('modalDate').textContent = date;
+            
+            // Set labels
+            const labelsContainer = document.getElementById('modalLabels');
+            labelsContainer.innerHTML = '';
+            if (issue.labels && issue.labels.length > 0) {
+                issue.labels.forEach(label => {
+                    const labelName = label.toLowerCase();
+                    const labelText = label.toUpperCase();
+                    let icon = '';
+                    let bgColor = '';
+                    let textColor = '';
+                    
+                    if (labelName === 'bug') {
+                        icon = '🪲';
+                        bgColor = 'bg-red-50';
+                        textColor = 'text-red-600';
+                    } else if (labelName === 'help wanted') {
+                        icon = '⭕';
+                        bgColor = 'bg-yellow-50';
+                        textColor = 'text-yellow-600';
+                    } else if (labelName === 'enhancement') {
+                        icon = '✨';
+                        bgColor = 'bg-green-50';
+                        textColor = 'text-green-600';
+                    } else if (labelName === 'good first issue') {
+                        icon = '🖊️';
+                        bgColor = 'bg-orange-50';
+                        textColor = 'text-orange-600';
+                    } else {
+                        icon = '🏷️';
+                        bgColor = 'bg-gray-50';
+                        textColor = 'text-gray-600';
+                    }
+                    
+                    const labelBadge = document.createElement('span');
+                    labelBadge.className = `inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold ${textColor} ${bgColor} rounded-md`;
+                    labelBadge.innerHTML = `<span>${icon}</span>${labelText}`;
+                    labelsContainer.appendChild(labelBadge);
+                });
+            }
+            
+            // Set description
+            document.getElementById('modalDescription').textContent = issue.description || 'No description available.';
+            
+            // Set assignee
+            document.getElementById('modalAssignee').textContent = issue.assignee || issue.author || 'Not assigned';
+            
+            // Set priority
+            const priorityElement = document.getElementById('modalPriority');
+            if (issue.priority === 'high') {
+                priorityElement.textContent = 'HIGH';
+                priorityElement.className = 'inline-block px-4 py-1 text-xs font-bold text-white bg-red-500 rounded-full uppercase';
+            } else if (issue.priority === 'medium') {
+                priorityElement.textContent = 'MEDIUM';
+                priorityElement.className = 'inline-block px-4 py-1 text-xs font-bold text-white bg-yellow-500 rounded-full uppercase';
+            } else if (issue.priority === 'low') {
+                priorityElement.textContent = 'LOW';
+                priorityElement.className = 'inline-block px-4 py-1 text-xs font-bold text-white bg-gray-500 rounded-full uppercase';
+            }
+            
             // Open the modal
             const modal = document.getElementById('my_modal_1');
             console.log('Opening modal:', modal); // Debug
             modal.showModal();
         })
-      
+       
 }
 
-// Make function globally accessible immediately
-window.loaddetails = loaddetails;
+
 
 //Fetch the Api data
 fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
@@ -50,6 +123,7 @@ fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
        
         const issuesList = document.getElementById('issuesList');
         data.data.forEach(issue => {
+            
           
             const issueElement = document.createElement('div');
             
@@ -435,5 +509,3 @@ function setActiveButton(id) {
     }
 }
 
-// Make function globally accessible for inline onclick
-window.setActiveButton = setActiveButton;
