@@ -7,6 +7,30 @@ let totalIssuesCount = 0;
 let openIssuesCount = 0;
 let closedIssuesCount = 0;
 
+
+//Applying load modal
+const loaddetails = (id) => {
+    console.log('loaddetails called with id:', id); // Debug
+    fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log('Issue data received:', data); // Debug
+            const issue = data.data;
+            
+            // Set title
+            document.getElementById('modalTitle').textContent = issue.title;
+            
+            // Open the modal
+            const modal = document.getElementById('my_modal_1');
+            console.log('Opening modal:', modal); // Debug
+            modal.showModal();
+        })
+      
+}
+
+// Make function globally accessible immediately
+window.loaddetails = loaddetails;
+
 //Fetch the Api data
 fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
     .then(response => response.json())
@@ -114,6 +138,7 @@ fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
             issueElement.classList.add('bg-white', 'rounded-lg', 'border', 'border-gray-200', 'border-t-4', borderColor, 'p-4', 'shadow-sm');
             issueElement.innerHTML =  `
             
+                <div  onclick="loaddetails(${issue.id})" class="cursor-pointer"> 
                 <div class="flex items-start justify-between mb-3">
                     <img src="${statusIcon}" alt="Status" class="w-6 h-6" />
                     ${priorityBadge}
@@ -125,8 +150,10 @@ fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
                     <p class="mb-0.5">#${issueNumber} by ${author}</p>
                     <p>${date}</p>
                 </div>
+                </div>
             `;
             issuesList.appendChild(issueElement);
+            console
         });
     })
 
@@ -228,6 +255,7 @@ fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
             // Build card
             issueElement.classList.add('bg-white', 'rounded-lg', 'border', 'border-gray-200', 'border-t-4', borderColor, 'p-4', 'shadow-sm');
             issueElement.innerHTML = `
+                <div  onclick="loaddetails(${issue.id})" class="cursor-pointer"> 
                 <div class="flex items-start justify-between mb-3">
                     <img src="${statusIcon}" alt="Status" class="w-6 h-6" />
                     ${priorityBadge}
@@ -238,6 +266,7 @@ fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
                 <div class="text-xs text-gray-500 pt-2 border-t border-gray-100">
                     <p class="mb-0.5">#${issueNumber} by ${author}</p>
                     <p>${date}</p>
+                </div>
                 </div>
             `;
             openIssuesList.appendChild(issueElement);
@@ -339,7 +368,8 @@ fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
                 // Build card
                 issueElement.classList.add('bg-white', 'rounded-lg', 'border', 'border-gray-200', 'border-t-4', borderColor, 'p-4', 'shadow-sm');
                 issueElement.innerHTML = `
-                    <div class="flex items-start justify-between mb-3">
+                    <div  onclick="loaddetails(${issue.id})" class="cursor-pointer"> 
+                <div class="flex items-start justify-between mb-3">
                     <img src="${statusIcon}" alt="Status" class="w-6 h-6" />
                     ${priorityBadge}
                 </div>
@@ -350,15 +380,12 @@ fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
                     <p class="mb-0.5">#${issueNumber} by ${author}</p>
                     <p>${date}</p>
                 </div>
+                </div>
                 `;
                 closeissuesList.appendChild(issueElement);
             }
         });
     })
-   
-
-
-
 
 // Button click function
 function setActiveButton(id) {
@@ -407,3 +434,6 @@ function setActiveButton(id) {
         document.getElementById('close-section').style.display = 'block';
     }
 }
+
+// Make function globally accessible for inline onclick
+window.setActiveButton = setActiveButton;
