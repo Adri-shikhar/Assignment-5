@@ -112,7 +112,9 @@ fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
 // Show all data in the all-section
 fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
     .then(response => response.json())
+    .then(data => new Promise(resolve => setTimeout(() => resolve(data), 2000)))
     .then(data => {
+        document.getElementById('allLoadingSpinner').remove();
         // Calculate counts
         totalIssuesCount = data.data.length;
         openIssuesCount = data.data.filter(issue => issue.status === 'open').length;
@@ -235,7 +237,9 @@ fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
  // Show open data in the open-section
 fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
     .then(response => response.json())
+    .then(data => new Promise(resolve => setTimeout(() => resolve(data), 2000)))
     .then(data => {
+        document.getElementById('openLoadingSpinner').remove();
         const openCount = data.data.filter(issue => issue.status === 'open').length;
         
         // Update open issues count
@@ -352,7 +356,9 @@ fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
     // Show closed data in the closed-section
 fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
     .then(response => response.json())
+    .then(data => new Promise(resolve => setTimeout(() => resolve(data), 2000)))
     .then(data => {
+        document.getElementById('closeLoadingSpinner').remove();
         const closedCount = data.data.filter(issue => issue.status === 'closed').length;
         
         // Update closed issues count
