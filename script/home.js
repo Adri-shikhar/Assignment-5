@@ -10,10 +10,12 @@ fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
 fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
     .then(response => response.json())
     .then(data => {
+        // Update all issues count
+        document.getElementById('allIssueCount').textContent = `${data.data.length} Issues`;
        
         const issuesList = document.getElementById('issuesList');
         data.data.forEach(issue => {
-            let opencount=data.data.length;
+          
             const issueElement = document.createElement('div');
             
             //console.log('Issue state:', issue.state, 'Issue status:', issue.status); // Debug
@@ -89,8 +91,7 @@ fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
                     </span>`;
                   
                 });
-                           }
-            console.log('Labels count for issue #' + + opencount); // Debug
+            }
             
             // Format author and date
             const author = issue.author || 'unknown';
@@ -123,9 +124,14 @@ fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
 fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
     .then(response => response.json())
     .then(data => {
+        const openCount = data.data.filter(issue => issue.status === 'open').length;
+        console.log('Open issues count:', openCount);
+        
+        // Update open issues count
+        document.getElementById('openIssueCount').textContent = `${openCount} Issues`;
        
-         const openissuesList = document.getElementById('openIssuesList');
-             data.data.forEach(issue => {
+        const openissuesList = document.getElementById('openIssuesList');
+        data.data.forEach(issue => {
             let open_issue = issue.status;
             if (open_issue === 'open') 
             { const issueElement = document.createElement('div');
@@ -141,7 +147,14 @@ fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
                 statusIcon = 'assets/Open-Status.png';
                 borderColor = 'border-t-green-500';
             }
-          
+            else if (issue.status === 'closed') {
+                statusIcon = 'assets/Closed- Status .png';
+                borderColor = 'border-t-purple-500';
+            }
+            else {
+                statusIcon = 'assets/Aperture.png';
+                borderColor = 'border-t-gray-500';
+            }
          
             // Priority color with if-else
             let priorityBadge = '';
@@ -218,11 +231,10 @@ fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
                 </div>
             `;
             openIssuesList.appendChild(issueElement);
-           console.log(open_issue); // Debug
-           console.log(issue.title); // Debug
             }
         });
     })
+   
 
 
 
