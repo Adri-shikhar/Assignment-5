@@ -93,8 +93,8 @@ fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
                     }
                     else {
                         icon = '🏷️';
-                        bgColor = 'bg-gray-50';
-                        textColor = 'text-gray-600';
+                        bgColor = 'bg-yellow-50';
+                        textColor = 'text-yellow-700';
                     }
                     
                     labelsHtml += `<span class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold ${textColor} ${bgColor} rounded-full">
@@ -118,8 +118,8 @@ fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
                     <img src="${statusIcon}" alt="Status" class="w-6 h-6" />
                     ${priorityBadge}
                 </div>
-                <h3 class="text-base font-bold text-gray-900 mb-2">${issue.title}</h3>
-                <p class="text-sm text-gray-600 mb-3 leading-relaxed">${issue.description || 'No description'}</p>
+                <h3 class="text-sm font-bold  text-gray-900 mb-2">${issue.title}</h3>
+                <p class="text-xs text-gray-600 mb-3 leading-relaxed">${issue.description || 'No description'}</p>
                 <div class="flex flex-wrap gap-2 mb-3">${labelsHtml}</div>
                 <div class="text-xs text-gray-500 pt-2 border-t border-gray-100">
                     <p class="mb-0.5">#${issueNumber} by ${author}</p>
@@ -210,8 +210,8 @@ fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
                     }
                     else {
                         icon = '🏷️';
-                        bgColor = 'bg-gray-50';
-                        textColor = 'text-gray-600';
+                        bgColor = 'bg-yellow-50';
+                        textColor = 'text-yellow-700';
                     }
                     
                     labelsHtml += `<span class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold ${textColor} ${bgColor} rounded-full">
@@ -232,8 +232,8 @@ fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
                     <img src="${statusIcon}" alt="Status" class="w-6 h-6" />
                     ${priorityBadge}
                 </div>
-                <h3 class="text-base font-bold text-gray-900 mb-2">${issue.title}</h3>
-                <p class="text-sm text-gray-600 mb-3 leading-relaxed">${issue.description || 'No description'}</p>
+                <h3 class="text-sm font-bold  text-gray-900 mb-2">${issue.title}</h3>
+                <p class="text-xs text-gray-600 mb-3 leading-relaxed">${issue.description || 'No description'}</p>
                 <div class="flex flex-wrap gap-2 mb-3">${labelsHtml}</div>
                 <div class="text-xs text-gray-500 pt-2 border-t border-gray-100">
                     <p class="mb-0.5">#${issueNumber} by ${author}</p>
@@ -246,8 +246,7 @@ fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
     })
 
 
-    
-   
+
 
 
 

@@ -37,10 +37,18 @@
                 <input id="searchInput" type="text" placeholder="Search issues..." class="w-full pl-9 pr-3 py-1.5 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-indigo-400 bg-white" />
             </div>
         </div>
+        
+        <!-- New Issue Button -->
+        <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M12 5v14M5 12h14"/>
+            </svg>
+            New Issue
+        </button>
     </nav>
 
     <!-- Main Content -->
-    <main class="max-w-4xl mx-auto mt-8 px-4">
+    <main class="mx-auto mt-8 px-4" style="max-width: 1100px;">
 
         <!-- Filter Tabs -->
         <div class="flex items-center gap-3 mb-4">
@@ -66,7 +74,7 @@
                 </div>
             </div>
             <!-- All Issues List -->
-            <div id="issuesList" class="space-y-3 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4">
+            <div id="issuesList" class="space-y-3 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 <!-- Issues will be dynamically inserted here -->
                
             </div>
@@ -88,7 +96,7 @@
                     <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-purple-500 inline-block"></span> Closed</span>
                 </div>
             </div>
-            <div id="openIssuesList" class="space-y-3 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4">
+            <div id="openIssuesList" class="space-y-3 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
                
             </div>
         </div>
@@ -109,7 +117,7 @@
                     <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-purple-500 inline-block"></span> Closed</span>
                 </div>
             </div>
-            <div id="closeIssuesList" class="space-y-3 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4">
+            <div id="closeIssuesList" class="space-y-3 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
                
             </div>
         </div>
