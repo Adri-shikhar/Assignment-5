@@ -7,6 +7,161 @@ let totalIssuesCount = 0;
 let openIssuesCount = 0;
 let closedIssuesCount = 0;
 
+// ---- BUILD ISSUE CARD ----
+
+function buildIssueCard(issue) {
+
+    
+    let statusIcon = '';
+    let borderColor = '';
+
+    if (issue.status === 'open') {
+        statusIcon = 'assets/Open-Status.png';
+        borderColor = 'border-t-green-500';
+    }
+    else if (issue.status === 'closed') {
+        statusIcon = 'assets/Closed- Status .png';
+        borderColor = 'border-t-purple-500';
+    }
+    else {
+        statusIcon = 'assets/Aperture.png';
+        borderColor = 'border-t-gray-500';
+    }
+
+    
+    let priorityBadge = '';
+
+    if (issue.priority === 'high') {
+        priorityBadge = '<span class="px-2 py-1 text-xs font-semibold text-red-700 bg-red-50 rounded">HIGH</span>';
+    }
+    else if (issue.priority === 'medium') {
+        priorityBadge = '<span class="px-2 py-1 text-xs font-semibold text-yellow-700 bg-yellow-50 rounded">MEDIUM</span>';
+    }
+    else if (issue.priority === 'low') {
+        priorityBadge = '<span class="px-2 py-1 text-xs font-semibold text-gray-600 bg-gray-100 rounded">LOW</span>';
+    }
+
+    
+    let labelsHtml = '';
+
+    if (issue.labels && issue.labels.length > 0) {
+        issue.labels.forEach(function (label) {
+            const labelName = label.toLowerCase();
+            const labelText = label.toUpperCase();
+
+            let icon = '';
+            let bgColor = '';
+            let textColor = '';
+
+            if (labelName === 'bug') {
+                icon = '🪲';
+                bgColor = 'bg-red-50';
+                textColor = 'text-red-600';
+            }
+            else if (labelName === 'help wanted') {
+                icon = '⭕';
+                bgColor = 'bg-yellow-50';
+                textColor = 'text-yellow-600';
+            }
+            else if (labelName === 'enhancement') {
+                icon = '✨';
+                bgColor = 'bg-green-50';
+                textColor = 'text-green-600';
+            }
+            else if (labelName === 'good first issue') {
+                icon = '🖊️';
+                bgColor = 'bg-orange-50';
+                textColor = 'text-orange-600';
+            }
+            else {
+                icon = '🏷️';
+                bgColor = 'bg-yellow-50';
+                textColor = 'text-yellow-700';
+            }
+
+            labelsHtml += `<span class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold ${textColor} ${bgColor} rounded-full">
+                <span>${icon}</span>${labelText}
+            </span>`;
+        });
+    }
+
+  
+    const author = issue.author || 'unknown';
+    const date = new Date(issue.createdAt).toLocaleDateString();
+
+   
+    const card = document.createElement('div');
+    card.className = 'bg-white rounded-lg border border-gray-200 border-t-4 ' + borderColor + ' p-4 shadow-sm';
+    card.innerHTML = `
+        <div onclick="loaddetails(${issue.id})" class="cursor-pointer">
+            <div class="flex items-start justify-between mb-3">
+                <img src="${statusIcon}" alt="Status" class="w-6 h-6" />
+                ${priorityBadge}
+            </div>
+            <h3 class="text-sm font-bold text-gray-900 mb-2">${issue.title}</h3>
+            <p class="text-xs text-gray-600 mb-3 leading-relaxed">${issue.description || 'No description'}</p>
+            <div class="flex flex-wrap gap-2 mb-3">${labelsHtml}</div>
+            <div class="text-xs text-gray-500 pt-2 border-t border-gray-100">
+                <p class="mb-0.5">#${issue.id} by ${author}</p>
+                <p>${date}</p>
+            </div>
+        </div>`;
+
+  
+    return card;
+}
+
+
+// ---- SEARCH ----
+
+const searchInput = document.getElementById('searchInput');
+searchInput.addEventListener('input', function () {
+
+    const searchText = searchInput.value.trim();
+    if (searchText.length === 0) {
+        document.getElementById('search-section').style.display = 'none';
+        document.getElementById('filterTabs').style.display = 'flex';
+        document.getElementById('all-section').style.display = 'block';
+        document.getElementById('open-section').style.display = 'none';
+        document.getElementById('close-section').style.display = 'none';
+        return;
+    }
+    document.getElementById('filterTabs').style.display = 'none';
+    document.getElementById('all-section').style.display = 'none';
+    document.getElementById('open-section').style.display = 'none';
+    document.getElementById('close-section').style.display = 'none';
+    document.getElementById('search-section').style.display = 'block';
+
+    
+    document.getElementById('searchResultCount').textContent = 'Searching...';
+    document.getElementById('searchResultsList').innerHTML = '';
+
+    fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=' + searchText)
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+
+            const results = data.data;
+            const list = document.getElementById('searchResultsList');
+            list.innerHTML = '';
+
+         
+            document.getElementById('searchResultCount').textContent = results.length + ' results for "' + searchText + '"';
+
+            if (results.length === 0) {
+                list.innerHTML = '<p class="col-span-full text-center text-gray-500 py-10">No issues found.</p>';
+                return;
+            }
+
+           
+            results.forEach(function (issue) {
+                const card = buildIssueCard(issue);
+                list.appendChild(card);
+            });
+        });
+});
+
 
 //Applying load modal
 const loaddetails = (id) => {
@@ -108,6 +263,8 @@ const loaddetails = (id) => {
 fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
     .then(response => response.json())
     .then(data => console.log(data))
+
+
 
 // Show all data in the all-section
 fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
@@ -234,6 +391,7 @@ fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
     })
 
 
+
  // Show open data in the open-section
 fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
     .then(response => response.json())
@@ -353,6 +511,7 @@ fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
     })
 
 
+
     // Show closed data in the closed-section
 fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
     .then(response => response.json())
@@ -466,6 +625,8 @@ fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
             }
         });
     })
+
+
 
 // Button click function
 function setActiveButton(id) {

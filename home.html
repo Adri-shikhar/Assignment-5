@@ -57,10 +57,25 @@
     <main class="mx-auto mt-8 px-4" style="max-width: 1100px;">
 
         <!-- Filter Tabs -->
-        <div class="flex items-center gap-3 mb-4">
+        <div id="filterTabs" class="flex items-center gap-3 mb-4">
             <button id="btnAll" onclick="setActiveButton('btnAll')" class="btn btn-primary btn-sm">All</button>
             <button id="btnOpen" onclick="setActiveButton('btnOpen')" class="btn btn-outline btn-sm">Open</button>
             <button id="btnClosed" onclick="setActiveButton('btnClosed')" class="btn btn-outline btn-sm">Closed</button>
+        </div>
+
+        <!-- Search Results Section -->
+        <div id="search-section" style="display: none;">
+            <div class="bg-white rounded-xl border border-gray-200 px-5 py-4 flex items-center justify-between mb-4">
+                <div class="flex items-center gap-3">
+                    <svg class="w-6 h-6 text-indigo-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                    <div>
+                        <p id="searchResultCount" class="font-bold text-gray-900 text-base">Searching...</p>
+                        <p class="text-sm text-gray-500">Search results</p>
+                    </div>
+                </div>
+            </div>
+            <div id="searchResultsList" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            </div>
         </div>
 
         <!-- All Section -->
